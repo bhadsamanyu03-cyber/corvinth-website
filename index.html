@@ -3,50 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Corvinth — Protect Your Intimate Images</title>
-  <meta name="description" content="Corvinth detects and removes non-consensual intimate images across platforms — even when rotated, cropped, or re-uploaded. Powered by PDQ perceptual hashing.">
-  <meta property="og:title" content="Corvinth — Protect Your Intimate Images">
-  <meta property="og:description" content="Your intimate images, protected forever. Powered by PDQ perceptual hashing.">
+  <title>Corvinth — Trust & Safety Infrastructure</title>
+  <meta name="description" content="Corvinth helps dating apps, communities, and creator platforms scan uploads using open-source perceptual hashing — without storing the original user media.">
+  <meta property="og:title" content="Corvinth — Trust & Safety Infrastructure">
+  <meta property="og:description" content="Detect known harmful image copies before they spread.">
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --green: #1D9E75;
-      --green-light: #E1F5EE;
-      --green-mid: #9FE1CB;
+      --green-light: rgba(29,158,117,0.12);
+      --green-mid: rgba(29,158,117,0.3);
       --green-dark: #0F6E56;
-      --green-deeper: #085041;
-      --text: #1a1a1a;
-      --text-muted: #555;
-      --text-faint: #888;
-      --border: rgba(0,0,0,0.1);
-      --border-soft: rgba(0,0,0,0.06);
-      --bg: #ffffff;
-      --bg-off: #f8f8f6;
+      --bg: #0a0a09;
+      --bg-card: #111110;
+      --bg-off: #161614;
+      --text: #ededea;
+      --text-muted: #9a9a95;
+      --text-faint: #5a5a56;
+      --border: rgba(255,255,255,0.07);
+      --border-mid: rgba(255,255,255,0.11);
       --radius: 10px;
-      --radius-lg: 14px;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --text: #f0efe9;
-        --text-muted: #a0a09a;
-        --text-faint: #666;
-        --border: rgba(255,255,255,0.1);
-        --border-soft: rgba(255,255,255,0.06);
-        --bg: #111110;
-        --bg-off: #181817;
-        --green-light: #04342C;
-        --green-mid: #085041;
-      }
+      --radius-lg: 16px;
     }
 
     html { scroll-behavior: smooth; }
-
     body {
       font-family: 'DM Sans', sans-serif;
       background: var(--bg);
@@ -56,96 +41,91 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* NAV */
+    a { text-decoration: none; color: inherit; }
+
     nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.1rem 2rem;
-      background: var(--bg);
-      border-bottom: 0.5px solid var(--border-soft);
-      backdrop-filter: blur(12px);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 2.5rem;
+      background: rgba(10,10,9,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 0.5px solid var(--border);
     }
 
     .logo {
-      font-size: 20px;
-      font-weight: 500;
+      font-family: 'DM Mono', monospace;
+      font-size: 17px; font-weight: 400;
+      letter-spacing: -0.02em;
       color: var(--text);
-      letter-spacing: -0.4px;
-      text-decoration: none;
     }
-    .logo span { color: var(--green); }
+    .logo .accent { color: var(--green); }
 
-    .nav-links { display: flex; align-items: center; gap: 8px; }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
 
     .btn-ghost {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      padding: 7px 16px;
-      border: 0.5px solid var(--border);
+      font-family: 'DM Sans', sans-serif; font-size: 13px;
+      padding: 7px 14px;
+      border: 0.5px solid var(--border-mid);
       border-radius: var(--radius);
       color: var(--text-muted);
-      cursor: pointer;
       background: transparent;
+      cursor: pointer;
       text-decoration: none;
       transition: background 0.15s, color 0.15s;
     }
     .btn-ghost:hover { background: var(--bg-off); color: var(--text); }
 
     .btn-primary {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      padding: 8px 20px;
-      border: none;
-      border-radius: var(--radius);
-      background: var(--green);
-      color: #fff;
-      cursor: pointer;
-      text-decoration: none;
+      font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+      padding: 8px 18px;
+      border: none; border-radius: var(--radius);
+      background: var(--green); color: #fff;
+      cursor: pointer; text-decoration: none;
       transition: background 0.15s;
     }
     .btn-primary:hover { background: var(--green-dark); }
+    .btn-primary.lg { font-size: 15px; padding: 13px 28px; border-radius: 12px; }
+    .btn-ghost.lg { font-size: 15px; padding: 13px 28px; border-radius: 12px; }
 
-    /* HERO */
-    .hero {
-      padding: 6rem 2rem 5rem;
+    .notice {
+      margin-top: 64px;
+      background: rgba(29,158,117,0.08);
+      border-bottom: 0.5px solid rgba(29,158,117,0.2);
+      padding: 10px 2.5rem;
       text-align: center;
-      max-width: 680px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .notice b { color: var(--green); font-weight: 500; }
+
+    .hero {
+      padding: 7rem 2rem 6rem;
+      text-align: center;
+      max-width: 760px;
       margin: 0 auto;
     }
 
     .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 500;
-      padding: 5px 14px;
-      border-radius: 999px;
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 12px; font-weight: 500;
+      padding: 6px 16px; border-radius: 999px;
       background: var(--green-light);
-      color: var(--green-dark);
+      color: var(--green);
       border: 0.5px solid var(--green-mid);
-      margin-bottom: 2.25rem;
-      letter-spacing: 0.01em;
+      margin-bottom: 2.5rem;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.02em;
     }
 
     .hero h1 {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(38px, 6vw, 54px);
-      font-weight: 400;
-      line-height: 1.1;
-      letter-spacing: -0.5px;
+      font-size: clamp(40px, 6vw, 64px);
+      font-weight: 500;
+      line-height: 1.08;
+      letter-spacing: -1.5px;
       color: var(--text);
       margin-bottom: 1.5rem;
     }
-
-    .hero h1 em {
-      font-style: italic;
-      color: var(--green);
-    }
+    .hero h1 em { font-style: normal; color: var(--green); }
 
     .hero p {
       font-size: 18px;
@@ -153,498 +133,443 @@
       line-height: 1.7;
       margin-bottom: 2.75rem;
       font-weight: 300;
+      max-width: 540px;
+      margin-left: auto; margin-right: auto;
     }
 
-    .hero-cta {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+    .hero-cta { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
 
-    .btn-large {
-      font-size: 15px;
-      padding: 12px 28px;
-    }
+    hr { border: none; border-top: 0.5px solid var(--border); }
 
-    /* DIVIDER */
-    hr { border: none; border-top: 0.5px solid var(--border-soft); }
+    .proof {
+      padding: 2.5rem 2.5rem;
+      display: flex; align-items: center; justify-content: center;
+      gap: 3.5rem; flex-wrap: wrap;
+    }
+    .proof-item { text-align: center; }
+    .proof-num {
+      font-size: 24px; font-weight: 500;
+      color: var(--text); letter-spacing: -0.5px;
+      font-family: 'DM Mono', monospace;
+    }
+    .proof-label { font-size: 12px; color: var(--text-faint); margin-top: 3px; }
 
-    /* PARTNERS */
-    .partners {
-      padding: 2.25rem 2rem;
-      text-align: center;
-    }
-    .partners-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--text-faint);
-      margin-bottom: 1.1rem;
-    }
-    .partner-list {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 2.5rem;
-      flex-wrap: wrap;
-    }
-    .partner-list span {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text-muted);
-      letter-spacing: -0.1px;
-    }
+    section { padding: 5.5rem 2.5rem; }
+    .inner { max-width: 820px; margin: 0 auto; }
+    .inner-sm { max-width: 580px; margin: 0 auto; }
 
-    /* SECTIONS */
-    section { padding: 5rem 2rem; }
-    .inner { max-width: 760px; margin: 0 auto; }
-
-    .section-label {
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--green);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 0.75rem;
-    }
-
-    .section-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(26px, 4vw, 34px);
-      font-weight: 400;
-      color: var(--text);
-      letter-spacing: -0.3px;
+    .section-tag {
+      font-size: 11px; font-weight: 500; color: var(--green);
+      text-transform: uppercase; letter-spacing: 0.12em;
       margin-bottom: 1rem;
-      line-height: 1.2;
+      font-family: 'DM Mono', monospace;
     }
-
+    .section-title {
+      font-size: clamp(26px, 3.5vw, 36px); font-weight: 500;
+      color: var(--text); letter-spacing: -0.5px;
+      margin-bottom: 1rem; line-height: 1.15;
+    }
     .section-sub {
-      font-size: 16px;
-      color: var(--text-muted);
-      line-height: 1.7;
-      margin-bottom: 3rem;
-      font-weight: 300;
-      max-width: 560px;
+      font-size: 16px; color: var(--text-muted);
+      line-height: 1.7; font-weight: 300;
+      max-width: 520px; margin-bottom: 3rem;
     }
 
-    /* HOW IT WORKS */
-    .steps {
+    .timeline { display: flex; flex-direction: column; }
+    .tl-item {
+      display: grid; grid-template-columns: 44px 1fr;
+      gap: 0 1.5rem; position: relative;
+    }
+    .tl-line {
+      position: absolute; left: 21px; top: 44px; bottom: -1rem;
+      width: 0.5px; background: var(--border-mid);
+    }
+    .tl-dot {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--green-light);
+      color: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 500; flex-shrink: 0;
+      border: 0.5px solid var(--green-mid);
+      font-family: 'DM Mono', monospace;
+    }
+    .tl-content { padding-bottom: 3rem; }
+    .tl-content h3 {
+      font-size: 15px; font-weight: 500; color: var(--text);
+      margin-bottom: 0.4rem; padding-top: 10px;
+    }
+    .tl-content p { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
+
+    .bg-section { background: var(--bg-card); }
+    .usecases {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-      gap: 1.25rem;
-    }
-
-    .step {
-      background: var(--bg);
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1px;
+      background: var(--border);
       border: 0.5px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 1.5rem;
+      overflow: hidden;
     }
+    .usecase { background: var(--bg-card); padding: 1.75rem; }
+    .usecase-icon { color: var(--green); margin-bottom: 1rem; }
+    .usecase h4 { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 0.5rem; }
+    .usecase p { font-size: 13px; color: var(--text-muted); line-height: 1.65; }
 
-    .step-num {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: var(--green-light);
-      color: var(--green-dark);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: 500;
-      margin-bottom: 1rem;
-      flex-shrink: 0;
+    .confidence-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1rem; margin-top: 2.5rem;
     }
-
-    .step h3 {
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--text);
-      margin-bottom: 0.5rem;
+    .conf-card {
+      background: var(--bg-off);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg); padding: 1.75rem;
     }
+    .conf-card b { font-size: 15px; color: var(--text); font-weight: 500; display: block; margin-bottom: 0.75rem; }
+    .conf-card p { font-size: 13px; color: var(--text-muted); line-height: 1.65; }
 
-    .step p {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.65;
-    }
-
-    /* FEATURES */
-    .features-section { background: var(--bg-off); }
-
-    .feat-grid {
+    .trust-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1rem;
     }
-
-    .feat {
-      background: var(--bg);
+    .trust-card {
+      background: var(--bg-card);
       border: 0.5px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.5rem;
+      border-radius: var(--radius-lg); padding: 1.5rem;
     }
+    .trust-card .ticon { color: var(--green); margin-bottom: 1rem; }
+    .trust-card h4 { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 0.4rem; }
+    .trust-card p { font-size: 13px; color: var(--text-muted); line-height: 1.65; }
 
-    .feat-icon {
-      font-size: 22px;
-      color: var(--green);
-      margin-bottom: 0.875rem;
-    }
-
-    .feat h4 {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text);
-      margin-bottom: 0.4rem;
-    }
-
-    .feat p {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.65;
-    }
-
-    /* STATS */
-    .stat-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
+    .disclaimer-box {
       margin-top: 3rem;
-    }
-
-    .stat {
-      text-align: center;
-      padding: 1.5rem 1rem;
-      background: var(--bg);
-      border: 0.5px solid var(--border);
-      border-radius: var(--radius-lg);
-    }
-
-    .stat-num {
-      font-family: 'DM Serif Display', serif;
-      font-size: 32px;
-      color: var(--green);
-      line-height: 1;
-      margin-bottom: 6px;
-    }
-
-    .stat-label {
-      font-size: 12px;
-      color: var(--text-faint);
-    }
-
-    /* FOR PLATFORMS */
-    .platform-card {
-      background: var(--bg);
-      border: 0.5px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 2rem;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      align-items: center;
-    }
-
-    @media (max-width: 600px) {
-      .platform-card { grid-template-columns: 1fr; }
-      .stat-row { grid-template-columns: 1fr; }
-    }
-
-    .platform-card h3 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 24px;
-      font-weight: 400;
-      color: var(--text);
-      margin-bottom: 0.75rem;
-      line-height: 1.2;
-    }
-
-    .platform-card p {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.7;
-      margin-bottom: 1.5rem;
-    }
-
-    .code-block {
+      padding: 1.5rem 2rem;
       background: var(--bg-off);
       border: 0.5px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.25rem;
-      font-family: 'DM Mono', 'Courier New', monospace;
+      border-radius: var(--radius-lg);
+      border-left: 2px solid var(--green);
+    }
+    .disclaimer-box p { font-size: 13px; color: var(--text-faint); line-height: 1.7; }
+
+    .pills { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 1.5rem; }
+    .pill {
+      border: 0.5px solid var(--border-mid);
+      background: var(--bg-card);
+      border-radius: 999px;
+      padding: 7px 14px;
       font-size: 12px;
       color: var(--text-muted);
-      line-height: 1.8;
-      overflow-x: auto;
+      font-family: 'DM Mono', monospace;
     }
 
-    .code-block .green { color: var(--green); }
-    .code-block .faint { color: var(--text-faint); }
-
-    /* CTA SECTION */
-    .cta-section {
-      text-align: center;
-    }
-
-    .email-form {
-      display: flex;
-      gap: 8px;
-      max-width: 420px;
-      margin: 0 auto 1rem;
-    }
-
-    .email-form input {
-      flex: 1;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      padding: 11px 16px;
-      border: 0.5px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--bg);
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.15s;
-    }
-
-    .email-form input:focus { border-color: var(--green); }
-    .email-form input::placeholder { color: var(--text-faint); }
-
-    .success-msg {
-      display: none;
-      font-size: 14px;
-      color: var(--green);
-      margin-top: 0.75rem;
-    }
-
-    /* FOOTER */
-    footer {
-      padding: 1.75rem 2rem;
-      border-top: 0.5px solid var(--border-soft);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    footer p { font-size: 13px; color: var(--text-faint); }
-
-    .footer-links {
-      display: flex;
-      gap: 1.5rem;
-    }
-
-    .footer-links a {
+    /* PRICING SIGNAL */
+    .pricing-note {
+      display: inline-block;
+      margin-top: 1.25rem;
       font-size: 13px;
       color: var(--text-faint);
-      text-decoration: none;
-      transition: color 0.15s;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.02em;
     }
+    .pricing-note b { color: var(--text-muted); font-weight: 500; }
+
+    .contact-section { background: var(--bg-card); }
+    .contact-box {
+      background: var(--bg-off);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 3.5rem 2.5rem;
+      text-align: center;
+    }
+    .contact-box h2 {
+      font-size: clamp(22px, 3vw, 30px); font-weight: 500;
+      color: var(--text); margin-bottom: 0.75rem; letter-spacing: -0.4px;
+    }
+    .contact-box p { font-size: 15px; color: var(--text-muted); margin-bottom: 2rem; }
+
+    .contact-actions { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+
+    .email-link {
+      display: inline-block;
+      background: var(--green);
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-weight: 500;
+      font-size: 15px;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .email-link:hover { background: var(--green-dark); }
+
+    footer {
+      padding: 1.75rem 2.5rem;
+      border-top: 0.5px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    footer p { font-size: 12px; color: var(--text-faint); font-family: 'DM Mono', monospace; }
+    .footer-links { display: flex; gap: 1.75rem; }
+    .footer-links a { font-size: 12px; color: var(--text-faint); transition: color 0.15s; }
     .footer-links a:hover { color: var(--text-muted); }
 
-    /* SVG ICONS inline */
-    .icon {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      vertical-align: middle;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 1.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+    svg.icon {
+      display: inline-block; width: 18px; height: 18px;
+      vertical-align: middle; stroke: currentColor; fill: none;
+      stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 1rem 1.25rem; }
+      section { padding: 4rem 1.25rem; }
+      .proof { gap: 2rem; }
+      .confidence-grid { grid-template-columns: 1fr; }
+      .btn-ghost:not(.nav-right .btn-ghost) { display: none; }
     }
   </style>
 </head>
 <body>
 
 <nav>
-  <a class="logo" href="#">cor<span>vinth</span></a>
-  <div class="nav-links">
-    <a class="btn-ghost" href="#platforms">for platforms</a>
-    <a class="btn-primary" href="#waitlist">get protected</a>
+  <a class="logo" href="#">cor<span class="accent">vinth</span></a>
+  <div class="nav-right">
+    <a class="btn-ghost" href="#how">how it works</a>
+    <a class="btn-ghost" href="#detection">detection</a>
+    <a class="btn-primary" href="#contact">request access</a>
   </div>
 </nav>
 
-<main>
+<div class="notice">
+  For platforms facing NCII takedown pressure — faster detection, safer review, clearer compliance logs.
+  <b>No false partnership claims. No overclaiming.</b>
+</div>
 
-  <!-- HERO -->
-  <div class="hero">
-    <div class="badge">
-      <svg class="icon" style="width:14px;height:14px;" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      powered by PDQ perceptual hashing
-    </div>
-    <h1>Your intimate images,<br><em>protected forever</em></h1>
-    <p>Corvinth detects and removes non-consensual intimate images across platforms — even when rotated, cropped, or re-uploaded.</p>
-    <div class="hero-cta">
-      <a class="btn-primary btn-large" href="#waitlist">protect my images</a>
-      <a class="btn-ghost btn-large" href="#how">see how it works</a>
+<div class="hero">
+  <div class="badge">
+    <svg class="icon" style="width:12px;height:12px;" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    PDQ · perceptual hashing · TIDA compliant
+  </div>
+  <h1>Detect known harmful<br>image copies before<br><em>they spread.</em></h1>
+  <p>Corvinth helps dating apps, communities, and creator platforms scan uploads using open-source perceptual hashing — without storing the original user media.</p>
+  <div class="hero-cta">
+    <a class="btn-primary lg" href="#contact">request early access</a>
+    <a class="btn-ghost lg" href="#how">see the pipeline</a>
+  </div>
+</div>
+
+<hr>
+
+<!-- FIX 2: added "as of May 2026" to the fine amount -->
+<div class="proof">
+  <div class="proof-item">
+    <div class="proof-num">PDQ</div>
+    <div class="proof-label">open-source perceptual hashing</div>
+  </div>
+  <div class="proof-item">
+    <div class="proof-num">50–200ms</div>
+    <div class="proof-label">target API decision latency</div>
+  </div>
+  <div class="proof-item">
+    <div class="proof-num">$53,088</div>
+    <div class="proof-label">FTC fine per violation · TIDA · as of May 2026</div>
+  </div>
+  <div class="proof-item">
+    <div class="proof-num">0</div>
+    <div class="proof-label">original images stored by default</div>
+  </div>
+</div>
+
+<hr>
+
+<section id="how">
+  <div class="inner">
+    <p class="section-tag">how it works</p>
+    <h2 class="section-title">One endpoint inside your upload pipeline.</h2>
+    <p class="section-sub">Corvinth is designed as infrastructure, not a moderation dashboard your team has to babysit.</p>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-line"></div>
+        <div class="tl-dot">01</div>
+        <!-- FIX 5: removed "we handle" pixel processing claim — now correctly says platform normalizes on their server -->
+        <div class="tl-content">
+          <h3>Normalize the upload on your server</h3>
+          <p>Your platform handles EXIF orientation, resizing, and compression using the Corvinth SDK — running entirely on your infrastructure. The SDK computes a perceptual hash from the image bytes. No pixels are sent to Corvinth.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-line"></div>
+        <div class="tl-dot">02</div>
+        <div class="tl-content">
+          <h3>Generate a robust perceptual fingerprint</h3>
+          <p>The SDK uses open-source perceptual hashing — Meta PDQ — and generates fingerprints for all 8 orientations simultaneously. Rotation, filters, and re-encoding are tolerated by design.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-line"></div>
+        <div class="tl-dot">03</div>
+        <div class="tl-content">
+          <h3>Match against the NCII hash database</h3>
+          <p>The hash is sent to Corvinth's API and compared against a database of reported non-consensual intimate imagery using Hamming-distance comparison across all 8 orientations.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">04</div>
+        <div class="tl-content">
+          <h3>Return a decision — you enforce your policy</h3>
+          <p>Your platform receives a structured response: allow, block, or send to review with a confidence tier and case UUID. Corvinth is the detection layer. You stay in control of what happens next.</p>
+        </div>
+      </div>
     </div>
   </div>
+</section>
 
-  <hr>
+<hr>
 
-  <!-- PARTNERS -->
-  <div class="partners">
-    <p class="partners-label">aligned with</p>
-    <div class="partner-list">
-      <span>StopNCII</span>
-      <span>SWGfL</span>
-      <span>Revenge Porn Helpline</span>
-      <span>PDQ · Meta Open Source</span>
+<section class="bg-section">
+  <div class="inner">
+    <p class="section-tag">who uses corvinth</p>
+    <h2 class="section-title">Built for platforms that handle user content.</h2>
+    <p class="section-sub">Any platform where users can upload images needs a detection layer. Corvinth is that layer.</p>
+    <div class="usecases">
+      <div class="usecase">
+        <div class="usecase-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        <h4>Dating apps</h4>
+        <p>Scan profile photos and DM attachments before delivery. Protect users from receiving unsolicited NCII.</p>
+      </div>
+      <div class="usecase">
+        <div class="usecase-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h4>Messaging apps</h4>
+        <p>Hash-check image attachments in transit. No content stored, no privacy compromise — just a match signal.</p>
+      </div>
+      <div class="usecase">
+        <div class="usecase-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
+        <h4>Social platforms</h4>
+        <p>Pre-screen every image upload at ingestion time. Stop NCII before it reaches a feed or profile.</p>
+      </div>
+      <div class="usecase">
+        <div class="usecase-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h4>Creator platforms</h4>
+        <p>Detect re-uploaded stolen content before it surfaces or monetises on your platform.</p>
+      </div>
+      <div class="usecase">
+        <div class="usecase-icon"><svg class="icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <h4>Content moderation tools</h4>
+        <p>Add NCII detection as a signal layer in your existing pipeline alongside current classifiers.</p>
+      </div>
+      <div class="usecase">
+        <div class="usecase-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        <h4>Search engines</h4>
+        <p>Filter image index results against the hash database before content is indexed and surfaced.</p>
+      </div>
     </div>
   </div>
+</section>
 
-  <hr>
+<hr>
 
-  <!-- HOW IT WORKS -->
-  <section id="how">
-    <div class="inner">
-      <p class="section-label">how it works</p>
-      <h2 class="section-title">Three steps to protection</h2>
-      <p class="section-sub">No images ever leave your device. We only process a digital fingerprint — a hash — that cannot be reversed into your photo.</p>
-      <div class="steps">
-        <div class="step">
-          <div class="step-num">1</div>
-          <h3>Select your image</h3>
-          <p>Choose the image you want to protect. It stays on your device — only a fingerprint is ever sent.</p>
-        </div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <h3>We generate a hash</h3>
-          <p>Our PDQ algorithm creates a unique fingerprint that matches the image even if rotated, flipped, or re-saved.</p>
-        </div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <h3>Platforms are alerted</h3>
-          <p>Partner platforms scan every upload against your hash. Matches are flagged and removed automatically.</p>
-        </div>
+<section id="detection">
+  <div class="inner">
+    <p class="section-tag">detection confidence</p>
+    <h2 class="section-title">Not every match should be treated the same.</h2>
+    <p class="section-sub">Edited images are messy. Corvinth separates obvious matches from uncertain derivatives so platforms can act quickly without overclaiming accuracy.</p>
+    <div class="confidence-grid">
+      <div class="conf-card">
+        <b>Exact / near-exact</b>
+        <p>Same or visually close media. Best for automatic blocking when platform policy allows.</p>
+      </div>
+      <div class="conf-card">
+        <b>Likely derivative</b>
+        <p>Rotated, filtered, compressed, or lightly cropped media. Best for high-priority review queue.</p>
+      </div>
+      <div class="conf-card">
+        <b>Needs review</b>
+        <p>Low-confidence similarity. Escalate instead of silently allowing or wrongly blocking.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- FEATURES -->
-  <section class="features-section">
-    <div class="inner">
-      <p class="section-label">why corvinth</p>
-      <h2 class="section-title">Built for real-world abuse patterns</h2>
-      <div class="feat-grid">
-        <div class="feat">
-          <div class="feat-icon">
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 2v6h-6M3 12a9 9 0 0 1 15-6.7L21 8M3 22v-6h6M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
-          </div>
-          <h4>Rotation tolerant</h4>
-          <p>Detects your image after 90°, 180°, or 270° rotation — a common evasion tactic.</p>
-        </div>
-        <div class="feat">
-          <div class="feat-icon">
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-          </div>
-          <h4>Zero image storage</h4>
-          <p>Your actual photo never touches our servers. Only a mathematical fingerprint is stored.</p>
-        </div>
-        <div class="feat">
-          <div class="feat-icon">
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          </div>
-          <h4>Always-on scanning</h4>
-          <p>Once registered, your hash is checked against every upload to partner platforms in real time.</p>
-        </div>
-        <div class="feat">
-          <div class="feat-icon">
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          </div>
-          <h4>Platform API</h4>
-          <p>Built for scale. Platforms integrate our REST API to scan content before it goes live.</p>
-        </div>
+<hr>
+
+<section class="bg-section">
+  <div class="inner">
+    <p class="section-tag">trust and technology</p>
+    <h2 class="section-title">Built honestly on available technology.</h2>
+    <p class="section-sub">Corvinth does not claim access to restricted systems like Microsoft PhotoDNA unless officially approved. Built around open-source perceptual hashing and platform-side compliance workflows.</p>
+    <div class="trust-grid">
+      <div class="trust-card">
+        <div class="ticon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h4>Zero image storage</h4>
+        <p>Images are never sent to or stored on Corvinth servers. The SDK runs on your infrastructure. Only the hash crosses the network boundary.</p>
       </div>
-      <div class="stat-row">
-        <div class="stat">
-          <div class="stat-num">8</div>
-          <div class="stat-label">orientations matched</div>
-        </div>
-        <div class="stat">
-          <div class="stat-num">≤32</div>
-          <div class="stat-label">bit tolerance</div>
-        </div>
-        <div class="stat">
-          <div class="stat-num">&lt;50ms</div>
-          <div class="stat-label">hash check time</div>
-        </div>
+      <div class="trust-card">
+        <div class="ticon"><svg class="icon" viewBox="0 0 24 24"><path d="M21 2v6h-6M3 12a9 9 0 0 1 15-6.7L21 8M3 22v-6h6M21 12a9 9 0 0 1-15 6.7L3 16"/></svg></div>
+        <h4>Rotation tolerant</h4>
+        <p>All 8 orientations stored at index time. Rotated or flipped re-uploads are still caught.</p>
+      </div>
+      <!-- FIX 1: removed "future hash database integration straightforward" implication -->
+      <div class="trust-card">
+        <div class="ticon"><svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <h4>PDQ compatible</h4>
+        <p>Uses Meta PDQ — the same open-source algorithm as StopNCII.org. Hash format is compatible by design.</p>
+      </div>
+      <div class="trust-card">
+        <div class="ticon"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <h4>Your policy, our detection</h4>
+        <p>We return a signal. You enforce your policy. Corvinth is the detection layer — not the decision maker.</p>
+      </div>
+      <div class="trust-card">
+        <div class="ticon"><svg class="icon" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+        <h4>Persistent hash database</h4>
+        <p>Hash database survives restarts and scales with your corpus. Hashes stored, not images.</p>
+      </div>
+      <div class="trust-card">
+        <div class="ticon"><svg class="icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <h4>TIDA compliance ready</h4>
+        <p>The Take It Down Act requires removal within 48 hours. Corvinth catches violations at upload and generates a case UUID and audit log for every request.</p>
       </div>
     </div>
-  </section>
 
-  <!-- FOR PLATFORMS -->
-  <section id="platforms">
-    <div class="inner">
-      <p class="section-label">for platforms</p>
-      <h2 class="section-title">One API. Instant protection.</h2>
-      <p class="section-sub">Integrate Corvinth into your content pipeline with a single POST request. Protect your users before harm occurs.</p>
-      <div class="platform-card">
-        <div>
-          <h3>Built for developers, designed for trust</h3>
-          <p>Our REST API is simple to integrate and built on the same PDQ hashing standard used by Meta, TikTok, and Reddit.</p>
-          <a class="btn-primary" href="mailto:joinstopncii@corvinth.io">request API access</a>
-        </div>
-        <div class="code-block">
-          <span class="faint"># check an image upload</span><br>
-          curl -X POST \<br>
-          &nbsp;&nbsp;<span class="green">"https://api.corvinth.io/hash/check"</span> \<br>
-          &nbsp;&nbsp;-F <span class="green">"file=@upload.jpg"</span><br><br>
-          <span class="faint"># response</span><br>
-          {<br>
-          &nbsp;&nbsp;<span class="green">"match_found"</span>: true,<br>
-          &nbsp;&nbsp;<span class="green">"bit_distance"</span>: 2,<br>
-          &nbsp;&nbsp;<span class="green">"action"</span>: <span class="green">"content_removed"</span><br>
-          }
-        </div>
+    <div class="pills">
+      <span class="pill">Meta PDQ</span>
+      <span class="pill">Open-source hashing</span>
+      <span class="pill">Near-duplicate detection</span>
+      <span class="pill">Compliance logs</span>
+      <span class="pill">Review queue</span>
+    </div>
+
+    <div class="disclaimer-box" style="margin-top: 2rem;">
+      <p>Partnerships with safety organizations may be pursued in the future. Corvinth does not represent or speak for StopNCII, Microsoft, Meta, or any listed organization unless a formal agreement exists. Corvinth is an independent trust and safety infrastructure company.</p>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- FIX 3 + 4: pricing signal added, contact section expanded -->
+<section class="contact-section" id="contact">
+  <div class="inner-sm">
+    <div class="contact-box">
+      <p class="section-tag" style="text-align:center;">early access</p>
+      <h2>Give small platforms serious safety infrastructure.</h2>
+      <p>Use Corvinth to reduce repost risk, speed up takedown response, and build a clear audit trail for harmful-image reports.</p>
+      <div class="contact-actions">
+        <a class="email-link" href="mailto:foundercorvinth@gmail.com">foundercorvinth@gmail.com</a>
+        <span class="pricing-note">Early access from <b>$299 / month</b> &nbsp;·&nbsp; Enterprise plans available</span>
       </div>
     </div>
-  </section>
-
-  <!-- WAITLIST CTA -->
-  <section id="waitlist" class="cta-section">
-    <div class="inner" style="max-width: 540px;">
-      <p class="section-label">early access</p>
-      <h2 class="section-title">Get notified when we launch</h2>
-      <p class="section-sub" style="margin-bottom: 2rem;">Be first in line — for victims seeking protection and platforms wanting to integrate.</p>
-      <form class="email-form" onsubmit="handleSignup(event)">
-        <input type="email" id="emailInput" placeholder="your@email.com" required autocomplete="email">
-        <button class="btn-primary" type="submit">notify me</button>
-      </form>
-      <p id="successMsg" class="success-msg">✓ You're on the list. We'll reach out soon.</p>
-      <p style="font-size: 12px; color: var(--text-faint); margin-top: 0.75rem;">No spam. One email when we go live.</p>
-    </div>
-  </section>
-
-</main>
+  </div>
+</section>
 
 <hr>
 
 <footer>
-  <p>© 2026 Corvinth. Built to protect.</p>
+  <p>CORVINTH · Trust & safety infrastructure · 2026</p>
   <div class="footer-links">
-    <a href="#">privacy</a>
-    <a href="#platforms">for platforms</a>
-    <a href="mailto:joinstopncii@corvinth.io">partner with us</a>
+    <a href="#contact">partner with us</a>
+    <a href="mailto:foundercorvinth@gmail.com">foundercorvinth@gmail.com</a>
   </div>
 </footer>
-
-<script>
-  function handleSignup(e) {
-    e.preventDefault();
-    const email = document.getElementById('emailInput').value;
-    if (email) {
-      document.getElementById('successMsg').style.display = 'block';
-      document.getElementById('emailInput').value = '';
-      // TODO: wire to your email backend (Mailchimp, Resend, etc.)
-      console.log('Signup:', email);
-    }
-  }
-</script>
 
 </body>
 </html>
